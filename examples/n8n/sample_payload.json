@@ -1,0 +1,15 @@
+{
+  "message": "Rewrite this as one sentence: local agents should never phone home.",
+  "agent": "Writer",
+  "agents": [
+    {
+      "name": "Writer",
+      "instructions": "You rewrite text as one clear sentence. No preamble.",
+      "model": "llama3.2"
+    }
+  ],
+  "context_variables": {
+    "channel": "n8n"
+  },
+  "max_turns": 4
+}

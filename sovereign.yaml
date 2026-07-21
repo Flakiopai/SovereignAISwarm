@@ -1,0 +1,12 @@
+# Sovereign defaults — privacy and kill-switch rules.
+# Override via SOVEREIGN_CONFIG path or environment variables.
+
+allow_cloud: false
+kill_switch: true
+kill_switch_path: .kill_switch
+default_model: llama3.2
+llm_base_url: http://127.0.0.1:11434/v1
+max_turns: 20
+allowed_roots:
+  - ./workspace
+  - ./examples
