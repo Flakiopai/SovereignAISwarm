@@ -5,7 +5,7 @@
 
 from pathlib import Path
 
-from swarm import Agent, Conductor, FilesystemMutator, load_config
+from sovereignaiswarm import Agent, Conductor, FilesystemMutator, load_config
 
 
 def main():

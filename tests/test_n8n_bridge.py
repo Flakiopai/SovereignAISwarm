@@ -1,9 +1,9 @@
 import json
 
-from swarm import Swarm
-from swarm.config import SovereignConfig
-from swarm.conductor import Conductor
-from swarm.llm import MockLocalLLM, create_completion
+from sovereignaiswarm import Swarm
+from sovereignaiswarm.config import SovereignConfig
+from sovereignaiswarm.conductor import Conductor
+from sovereignaiswarm.llm import MockLocalLLM, create_completion
 
 # Import the bridge module by path-friendly package-less load
 import importlib.util

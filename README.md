@@ -1,4 +1,4 @@
-# Swarm Sovereign
+# SovereignAISwarm
 
 Local-first multi-agent orchestration that keeps inference, state, and files on your machine.
 
@@ -8,7 +8,7 @@ Same lightweight `Swarm` / `Agent` API as the original Swarm project — rebuilt
 
 ---
 
-## Why Swarm Sovereign Exists
+## Why SovereignAISwarm Exists
 
 The original Swarm project proved that multi-agent systems can stay small: agents, tools, and handoffs — nothing more. That ergonomics story is excellent.
 
@@ -20,16 +20,16 @@ What it did not prioritize was **sovereignty**:
 - A turn ceiling so loops cannot run forever
 - A thin orchestration layer for pipelines and workflow runners
 
-Swarm Sovereign keeps the public API familiar, then adds only the controls required to run agents as infrastructure you own.
+SovereignAISwarm keeps the public API familiar, then adds only the controls required to run agents as infrastructure you own.
 
 ---
 
 ## What’s Different
 
-| Upstream Swarm | Swarm Sovereign |
+| Upstream Swarm | SovereignAISwarm |
 |----------------|-----------------|
 | Cloud chat-completions client | Local Ollama-compatible HTTP client (`LocalLLM`) |
-| Heavy SDK surface (`openai` + extras) | Runtime dependency: `pydantic` only |
+| Heavy SDK surface (cloud client + extras) | Runtime dependency: `pydantic` only |
 | Unbounded client-side runs | Sovereign ceiling: privacy gate, kill-switch, `max_turns` |
 | Handoffs as the only coordination primitive | Handoffs **plus** `Pipeline`, `Conductor`, and `FilesystemMutator` |
 | Designed around hosted APIs | Designed for air-gapped / LAN-only model servers |
@@ -37,7 +37,7 @@ Swarm Sovereign keeps the public API familiar, then adds only the controls requi
 You still write:
 
 ```python
-from swarm import Swarm, Agent
+from sovereignaiswarm import Swarm, Agent
 ```
 
 ---
@@ -66,7 +66,7 @@ flowchart TB
     API["Swarm · Conductor · REPL"]
   end
 
-  subgraph Core["swarm/"]
+  subgraph Core["sovereignaiswarm/"]
     SW["core.py — Swarm.run"]
     CFG["config.py — SovereignConfig"]
     LLM["llm.py — LocalLLM"]
@@ -76,7 +76,7 @@ flowchart TB
   end
 
   subgraph Local["Your machine"]
-    OLLAMA["Ollama / local OpenAI-compatible server"]
+    OLLAMA["Ollama / local chat.completions-compatible server"]
     DISK["allowed_roots<br/>./workspace · ./examples"]
     KILL[".kill_switch"]
   end
@@ -228,7 +228,7 @@ ollama pull llama3.2
 ### 3. Run your first agent
 
 ```python
-from swarm import Swarm, Agent
+from sovereignaiswarm import Swarm, Agent
 
 client = Swarm()
 
@@ -249,8 +249,8 @@ Handoffs, tools, and `context_variables` behave like upstream Swarm.
 ### Interactive REPL
 
 ```python
-from swarm import Agent
-from swarm.repl import run_demo_loop
+from sovereignaiswarm import Agent
+from sovereignaiswarm.repl import run_demo_loop
 
 run_demo_loop(Agent(instructions="You are a helpful agent."))
 ```
@@ -272,7 +272,7 @@ allowed_roots:
 ```
 
 ```python
-from swarm import load_config
+from sovereignaiswarm import load_config
 
 cfg = load_config()
 cfg.assert_llm_allowed(cfg.llm_base_url)  # blocks cloud URLs when allow_cloud is false
@@ -292,28 +292,28 @@ Env overrides: `SWARM_LLM_BASE_URL`, `SWARM_LLM_MODEL`, `SOVEREIGN_CONFIG`, `SOV
 
 ## Modules Overview
 
-### `LocalLLM` (`swarm/llm.py`)
+### `LocalLLM` (`sovereignaiswarm/llm.py`)
 
-Ollama-compatible client with an OpenAI-shaped surface:
+Ollama-compatible client with an chat.completions-shaped surface:
 
 `client.chat.completions.create(...)`
 
 Used automatically by `Swarm()`. Supports streaming SSE. Includes `MockLocalLLM` for offline tests.
 
-### `SovereignConfig` (`swarm/config.py`)
+### `SovereignConfig` (`sovereignaiswarm/config.py`)
 
 Loads defaults → YAML → environment. Enforces privacy URL checks, kill-switch, turn ceiling, and allowed roots.
 
 ```python
-from swarm import SovereignConfig, load_config
+from sovereignaiswarm import SovereignConfig, load_config
 ```
 
-### `FilesystemMutator` (`swarm/filesystem.py`)
+### `FilesystemMutator` (`sovereignaiswarm/filesystem.py`)
 
 Safe `read` / `write` / `append` / `list` under `allowed_roots`.
 
 ```python
-from swarm import FilesystemMutator
+from sovereignaiswarm import FilesystemMutator
 
 fs = FilesystemMutator()
 fs.write("workspace/out.txt", "hello")
@@ -322,12 +322,12 @@ print(fs.read("workspace/out.txt"))
 
 Agent tool wrappers: `tool_read_file`, `tool_write_file`, `tool_list_dir`.
 
-### `Pipeline` (`swarm/pipeline.py`)
+### `Pipeline` (`sovereignaiswarm/pipeline.py`)
 
 In-memory task queue:
 
 ```python
-from swarm import Pipeline
+from sovereignaiswarm import Pipeline
 
 pipe = Pipeline()
 pipe.submit({"job": "summarize"}, from_agent="intake", to_agent="writer")
@@ -335,12 +335,12 @@ task = pipe.take(agent="writer")
 pipe.complete(task.id, result="done")
 ```
 
-### `Conductor` (`swarm/conductor.py`)
+### `Conductor` (`sovereignaiswarm/conductor.py`)
 
 Named agents, shared history/context, pipeline drain:
 
 ```python
-from swarm import Agent, Conductor
+from sovereignaiswarm import Agent, Conductor
 
 conductor = Conductor()
 conductor.register(Agent(name="Writer", instructions="Be concise."), activate=True)
@@ -448,8 +448,8 @@ Kill-switch drill: `touch .kill_switch` to halt — `rm .kill_switch` to resume.
 ## Project Layout
 
 ```text
-OpenAISwarmSovereign/
-├── swarm/
+SovereignAISwarm/
+├── sovereignaiswarm/
 │   ├── core.py           # Swarm.run — public API loop
 │   ├── types.py          # Agent, Response, Result
 │   ├── llm.py            # LocalLLM + MockLocalLLM

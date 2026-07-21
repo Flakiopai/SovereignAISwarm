@@ -1,4 +1,4 @@
-from swarm.pipeline import Pipeline, TaskStatus
+from sovereignaiswarm.pipeline import Pipeline, TaskStatus
 
 
 def test_submit_take_complete():

@@ -7,7 +7,7 @@ AgentFunction = Callable[..., Union[str, "Agent", dict]]
 
 
 class Function(BaseModel):
-    """Local stand-in for an OpenAI function call payload."""
+    """Local stand-in for a chat-completions function call payload."""
 
     arguments: str
     name: str

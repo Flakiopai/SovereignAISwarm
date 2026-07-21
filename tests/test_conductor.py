@@ -1,8 +1,8 @@
-from swarm import Agent, Swarm
-from swarm.config import SovereignConfig
-from swarm.conductor import Conductor
-from swarm.llm import MockLocalLLM, create_completion
-from swarm.pipeline import TaskStatus
+from sovereignaiswarm import Agent, Swarm
+from sovereignaiswarm.config import SovereignConfig
+from sovereignaiswarm.conductor import Conductor
+from sovereignaiswarm.llm import MockLocalLLM, create_completion
+from sovereignaiswarm.pipeline import TaskStatus
 
 
 def _conductor_with_mock(responses):

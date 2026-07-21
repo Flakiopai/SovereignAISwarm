@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from swarm.llm import (
+from sovereignaiswarm.llm import (
     DEFAULT_BASE_URL,
     DEFAULT_MODEL,
     LocalLLM,
@@ -30,10 +30,10 @@ def test_local_llm_reads_env(monkeypatch):
 
 
 def test_local_llm_blocks_cloud_url_by_default():
-    from swarm.config import CloudForbiddenError
+    from sovereignaiswarm.config import CloudForbiddenError
 
     with pytest.raises(CloudForbiddenError):
-        LocalLLM(base_url="https://api.openai.com/v1")
+        LocalLLM(base_url="https://api.cloud-llm.example/v1")
 
 
 def test_completion_from_dict_parses_tool_calls():

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from swarm.config import (
+from sovereignaiswarm.config import (
     CloudForbiddenError,
     KillSwitchError,
     SovereignConfig,
@@ -15,16 +15,16 @@ def test_default_config_blocks_cloud_and_allows_local():
     assert cfg.is_local_url("http://127.0.0.1:11434/v1")
     assert cfg.is_local_url("http://localhost:11434/v1")
     assert cfg.is_local_url("http://host.docker.internal:11434/v1")
-    assert not cfg.is_local_url("https://api.openai.com/v1")
+    assert not cfg.is_local_url("https://api.cloud-llm.example/v1")
 
     cfg.assert_llm_allowed("http://127.0.0.1:11434/v1")
     with pytest.raises(CloudForbiddenError):
-        cfg.assert_llm_allowed("https://api.openai.com/v1")
+        cfg.assert_llm_allowed("https://api.cloud-llm.example/v1")
 
 
 def test_allow_cloud_permits_remote_url():
     cfg = SovereignConfig(allow_cloud=True)
-    cfg.assert_llm_allowed("https://api.openai.com/v1")
+    cfg.assert_llm_allowed("https://api.cloud-llm.example/v1")
 
 
 def test_kill_switch_engaged_by_file(tmp_path, monkeypatch):

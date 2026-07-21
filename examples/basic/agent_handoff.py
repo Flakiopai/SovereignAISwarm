@@ -1,4 +1,4 @@
-from swarm import Swarm, Agent
+from sovereignaiswarm import Swarm, Agent
 
 client = Swarm()
 

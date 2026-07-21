@@ -1,6 +1,6 @@
-"""Local LLM client with an OpenAI-compatible chat.completions surface.
+"""Local LLM client with a chat.completions-compatible HTTP surface.
 
-Talks to Ollama (or any OpenAI-compatible local server) over HTTP.
+Talks to Ollama (or any local server that speaks the chat.completions API) over HTTP.
 No cloud SDK dependency.
 """
 

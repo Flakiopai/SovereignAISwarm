@@ -3,9 +3,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from swarm import Agent, Swarm
-from swarm.config import KillSwitchError, SovereignConfig
-from swarm.llm import MockLocalLLM, create_completion
+from sovereignaiswarm import Agent, Swarm
+from sovereignaiswarm.config import KillSwitchError, SovereignConfig
+from sovereignaiswarm.llm import MockLocalLLM, create_completion
 
 DEFAULT_RESPONSE_CONTENT = "sample response content"
 

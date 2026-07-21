@@ -1,6 +1,6 @@
 import json
 
-from swarm import Swarm
+from sovereignaiswarm import Swarm
 
 
 def process_and_print_streaming_response(response):
@@ -63,7 +63,7 @@ def run_demo_loop(
 ) -> None:
     """Interactive CLI loop. Uses a local Swarm client by default."""
     client = client or Swarm()
-    print("Starting Swarm Sovereign CLI")
+    print("Starting SovereignAISwarm CLI")
 
     messages = []
     agent = starting_agent

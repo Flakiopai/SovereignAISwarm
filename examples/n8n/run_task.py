@@ -31,8 +31,8 @@ import json
 import sys
 from typing import Any, Dict, List, Optional
 
-from swarm import Agent, Conductor, load_config
-from swarm.config import CloudForbiddenError, KillSwitchError
+from sovereignaiswarm import Agent, Conductor, load_config
+from sovereignaiswarm.config import CloudForbiddenError, KillSwitchError
 
 
 def _build_agents(spec: Optional[List[dict]]) -> List[Agent]:
@@ -118,7 +118,7 @@ def _error(exc: Exception) -> Dict[str, Any]:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Swarm Sovereign n8n task bridge")
+    parser = argparse.ArgumentParser(description="SovereignAISwarm n8n task bridge")
     parser.add_argument(
         "--file",
         "-f",

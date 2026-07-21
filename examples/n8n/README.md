@@ -1,6 +1,6 @@
 # n8n Docker bridge
 
-Run Swarm Sovereign as an Execute Command / Docker step. JSON in, JSON out.
+Run SovereignAISwarm as an Execute Command / Docker step. JSON in, JSON out.
 
 ## Quick test
 
@@ -22,7 +22,7 @@ python examples/n8n/run_task.py --file examples/n8n/sample_payload.json
 Command example (host has the repo + Ollama):
 
 ```text
-python /path/to/OpenAISwarmSovereign/examples/n8n/run_task.py
+python /path/to/SovereignAISwarm/examples/n8n/run_task.py
 ```
 
 Set the node to pass JSON on stdin (or write a temp file and use `--file`).

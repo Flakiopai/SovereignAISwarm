@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from swarm.config import KillSwitchError, SovereignConfig
-from swarm.filesystem import FilesystemError, FilesystemMutator
+from sovereignaiswarm.config import KillSwitchError, SovereignConfig
+from sovereignaiswarm.filesystem import FilesystemError, FilesystemMutator
 
 
 @pytest.fixture

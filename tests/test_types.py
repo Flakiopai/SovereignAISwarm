@@ -1,5 +1,5 @@
-from swarm import Agent, Response, Result
-from swarm.types import (
+from sovereignaiswarm import Agent, Response, Result
+from sovereignaiswarm.types import (
     ChatCompletionMessage,
     ChatCompletionMessageToolCall,
     Function,
@@ -38,7 +38,7 @@ def test_response_and_result_defaults():
     assert result.context_variables == {"k": "v"}
 
 
-def test_local_message_types_have_no_openai_dependency():
+def test_local_message_types_have_no_cloud_sdk_dependency():
     tool_call = ChatCompletionMessageToolCall(
         id="tc1",
         function=Function(name="greet", arguments='{"name":"Ada"}'),

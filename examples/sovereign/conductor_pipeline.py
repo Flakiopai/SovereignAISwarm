@@ -3,7 +3,7 @@
     python examples/sovereign/conductor_pipeline.py
 """
 
-from swarm import Agent, Conductor
+from sovereignaiswarm import Agent, Conductor
 
 
 def main():

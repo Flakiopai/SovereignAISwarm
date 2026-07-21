@@ -1,8 +1,8 @@
 import json
 
-from swarm.llm import MockLocalLLM, create_completion
-from swarm.repl.repl import pretty_print_messages, process_and_print_streaming_response
-from swarm.types import Response
+from sovereignaiswarm.llm import MockLocalLLM, create_completion
+from sovereignaiswarm.repl.repl import pretty_print_messages, process_and_print_streaming_response
+from sovereignaiswarm.types import Response
 
 
 def test_pretty_print_messages(capsys):
@@ -49,9 +49,9 @@ def test_process_and_print_streaming_response(capsys):
 
 
 def test_run_demo_loop_accepts_injected_client(monkeypatch):
-    from swarm import Agent, Swarm
-    from swarm.config import SovereignConfig
-    from swarm.repl import run_demo_loop
+    from sovereignaiswarm import Agent, Swarm
+    from sovereignaiswarm.config import SovereignConfig
+    from sovereignaiswarm.repl import run_demo_loop
 
     mock = MockLocalLLM()
     mock.set_response(create_completion({"content": "pong"}))

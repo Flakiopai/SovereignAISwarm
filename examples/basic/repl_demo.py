@@ -5,8 +5,8 @@ Requires a local Ollama-compatible server.
     python examples/basic/repl_demo.py
 """
 
-from swarm import Agent
-from swarm.repl import run_demo_loop
+from sovereignaiswarm import Agent
+from sovereignaiswarm.repl import run_demo_loop
 
 agent = Agent(
     name="Agent",
