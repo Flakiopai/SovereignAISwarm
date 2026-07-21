@@ -1,6 +1,7 @@
-"""Local LLM client with a chat.completions-compatible HTTP surface.
+"""Local LLM client with an Ollama-style HTTP chat surface.
 
-Talks to Ollama (or any local server that speaks the chat.completions API) over HTTP.
+Talks to Ollama (or any local server that exposes a compatible
+`/v1/chat/completions` HTTP endpoint) over plain HTTP.
 No cloud SDK dependency.
 """
 
@@ -49,7 +50,7 @@ class ChatCompletion:
 
 
 class Delta:
-    """Streaming delta payload with a .json() helper matching upstream Swarm."""
+    """Streaming delta payload with a `.json()` helper matching upstream Swarm."""
 
     def __init__(self, data: Dict[str, Any]):
         self._data = data
@@ -310,7 +311,7 @@ def create_completion(
 
 
 class MockLocalLLM:
-    """In-memory stand-in with the same `chat.completions.create` surface."""
+    """In-memory mock with the same local `chat.completions.create` HTTP surface."""
 
     def __init__(self, model: str = DEFAULT_MODEL):
         self.base_url = "mock://local"

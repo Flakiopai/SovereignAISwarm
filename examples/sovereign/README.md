@@ -19,4 +19,11 @@ python examples/sovereign/conductor_pipeline.py
 python examples/sovereign/filesystem_agent.py
 ```
 
-Kill-switch: `touch .kill_switch` to halt runs; `rm .kill_switch` to resume.
+## Kill-switch
+
+Create `.kill_switch` to halt runs; remove it to resume:
+
+```shell
+touch .kill_switch
+rm .kill_switch
+```

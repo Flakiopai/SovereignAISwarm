@@ -3,6 +3,8 @@
 Requires a local Ollama-compatible server.
 
     python examples/basic/repl_demo.py
+
+Exit with Ctrl-C or EOF. Set NO_COLOR=1 for plain-text labels.
 """
 
 from sovereignaiswarm import Agent

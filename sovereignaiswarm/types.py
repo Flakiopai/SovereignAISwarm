@@ -7,14 +7,14 @@ AgentFunction = Callable[..., Union[str, "Agent", dict]]
 
 
 class Function(BaseModel):
-    """Local stand-in for a chat-completions function call payload."""
+    """Local function-call payload used by the Swarm (educational framework) API."""
 
     arguments: str
     name: str
 
 
 class ChatCompletionMessageToolCall(BaseModel):
-    """Local stand-in for a Chat Completions tool call."""
+    """Local tool-call payload for agent/tool messages."""
 
     id: str
     function: Function
@@ -22,7 +22,7 @@ class ChatCompletionMessageToolCall(BaseModel):
 
 
 class ChatCompletionMessage(BaseModel):
-    """Local stand-in for a Chat Completions message."""
+    """Local assistant/tool message payload for the run loop."""
 
     content: Optional[str] = None
     role: str = "assistant"

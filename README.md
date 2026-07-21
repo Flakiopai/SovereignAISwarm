@@ -6,6 +6,8 @@ Same lightweight `Swarm` / `Agent` API as the original Swarm project — rebuilt
 
 **Maintained by MatteBlackStudios**
 
+> **Independence notice:** This project is an independent fork of the upstream Swarm project (also described as the original Swarm project / Swarm educational framework). It is not affiliated with, endorsed by, or sponsored by any organization.
+
 ---
 
 ## Why SovereignAISwarm Exists
@@ -28,7 +30,7 @@ SovereignAISwarm keeps the public API familiar, then adds only the controls requ
 
 | Upstream Swarm | SovereignAISwarm |
 |----------------|-----------------|
-| Cloud chat-completions client | Local Ollama-compatible HTTP client (`LocalLLM`) |
+| Cloud HTTP chat client | Local Ollama-compatible HTTP client (`LocalLLM`) |
 | Heavy SDK surface (cloud client + extras) | Runtime dependency: `pydantic` only |
 | Unbounded client-side runs | Sovereign ceiling: privacy gate, kill-switch, `max_turns` |
 | Handoffs as the only coordination primitive | Handoffs **plus** `Pipeline`, `Conductor`, and `FilesystemMutator` |
@@ -76,7 +78,7 @@ flowchart TB
   end
 
   subgraph Local["Your machine"]
-    OLLAMA["Ollama / local chat.completions-compatible server"]
+    OLLAMA["Ollama / local HTTP chat server"]
     DISK["allowed_roots<br/>./workspace · ./examples"]
     KILL[".kill_switch"]
   end
@@ -93,6 +95,8 @@ flowchart TB
   FS --> DISK
   CFG --> KILL
 ```
+
+**Text description:** Your application, n8n, or CLI calls Swarm, Conductor, or the REPL. Those call into the `sovereignaiswarm` package (`core`, `config`, `llm`, `filesystem`, `pipeline`, `conductor`). The LLM client talks to a local model server; filesystem operations stay under `allowed_roots`; the kill-switch file can halt activity.
 
 ---
 
@@ -116,6 +120,8 @@ flowchart TD
   K -->|no| F
 ```
 
+**Text description:** Each turn checks the kill-switch, builds the prompt, calls the local LLM, optionally executes tools, may hand off to another agent, and repeats until there are no tool calls or `max_turns` is reached.
+
 ---
 
 ## LocalLLM Request Flow
@@ -134,6 +140,8 @@ sequenceDiagram
   Ollama-->>LLM: completion or SSE stream
   LLM-->>Swarm: ChatCompletion / chunks
 ```
+
+**Text description:** `Swarm.run` asks config to verify the kill-switch and LLM URL, then `LocalLLM` POSTs to the local `/v1/chat/completions` endpoint and returns a completion or stream chunks.
 
 Defaults:
 
@@ -172,6 +180,8 @@ flowchart LR
   ASK --> C
 ```
 
+**Text description:** Conductor registers agents, answers via `ask`/`delegate`, and can enqueue work into Pipeline. Pipeline holds tasks (`submit`/`take`/`complete`/`fail`). `process_next` drains queued tasks back through Conductor.
+
 - **Pipeline** — in-memory task queue for agent ↔ agent (or n8n node ↔ node) handoff
 - **Conductor** — named registry, shared history/context, optional pipeline drain
 - Handoffs inside `Swarm.run` still work; Conductor sits **above** them
@@ -191,6 +201,8 @@ flowchart TB
   KILL -->|no| OK[I/O under sandbox]
 ```
 
+**Text description:** Paths are resolved and must fall under `allowed_roots`. Allowed operations are read, write, append, and list. The kill-switch can stop I/O. Delete is disabled unless explicitly enabled.
+
 Delete is **off** unless you construct with `allow_delete=True`.
 
 ---
@@ -205,6 +217,8 @@ flowchart LR
   SW --> OUT[JSON stdout: ok · content · agent · messages]
   OUT --> N8N
 ```
+
+**Text description:** n8n sends JSON to `examples/n8n/run_task.py`, which uses Conductor and Swarm with LocalLLM, then returns JSON (`ok`, `content`, `agent`, `messages`) to n8n.
 
 ---
 
@@ -294,7 +308,7 @@ Env overrides: `SWARM_LLM_BASE_URL`, `SWARM_LLM_MODEL`, `SOVEREIGN_CONFIG`, `SOV
 
 ### `LocalLLM` (`sovereignaiswarm/llm.py`)
 
-Ollama-compatible client with an chat.completions-shaped surface:
+Ollama-compatible HTTP client with a local `chat.completions.create` method surface:
 
 `client.chat.completions.create(...)`
 
@@ -482,11 +496,35 @@ pytest -q
 
 ---
 
+
+## Accessibility & WCAG Compliance
+
+This repository is primarily documentation and a Python library (not a browser UI). The
+following WCAG 2.1 AA-oriented checks were applied to README, examples, and docs:
+
+| Check | Result |
+|-------|--------|
+| Heading structure | Single H1 (`SovereignAISwarm`); sections use H2; subsections use H3 |
+| Code blocks | Introduced with surrounding prose describing purpose and expected input/output |
+| Diagrams | Mermaid figures include a following **Text description** so meaning does not rely on graphics or color alone |
+| Tables | Header rows present; cells use plain language labels |
+| Color dependence | Diagrams and docs do not encode meaning with color alone; CLI ANSI colors are decorative |
+| Contrast | Documentation is plain Markdown (reader/theme controlled); no custom low-contrast styling ships here |
+| Keyboard / CLI | REPL uses stdin; Ctrl-C and EOF exit cleanly; set `NO_COLOR=1` for plain-text labels |
+| Examples docs | Example READMEs use clear headings and step lists without inaccessible widgets |
+
+If you consume this README in a browser or editor preview, use your environment's zoom,
+high-contrast, and screen-reader modes as needed. Report accessibility gaps via this
+repository's issue tracker.
+
+---
+
 ## License
 
-MIT — derived from the original Swarm project. See `LICENSE`.
+MIT — see `LICENSE`.
 
-This repository is an independent fork. It is **not** affiliated with, endorsed by, or sponsored by the upstream authors’ organizations.
+This project is an independent fork of the upstream Swarm project.
+It is not affiliated with, endorsed by, or sponsored by any organization.
 
 ---
 

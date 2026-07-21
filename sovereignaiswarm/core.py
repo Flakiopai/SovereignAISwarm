@@ -1,4 +1,4 @@
-"""Swarm run loop — same public API as upstream, backed by a local LLM."""
+"""Swarm run loop — same public API as upstream Swarm (educational framework), backed by a local LLM."""
 
 from __future__ import annotations
 

@@ -20,3 +20,15 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+-------------------------------------------------------------------------------
+Independent project notice
+
+This project is an independent fork of the upstream Swarm project.
+It is not affiliated with, endorsed by, or sponsored by any organization.
+
+SovereignAISwarm is a local-first educational and infrastructure-oriented
+framework. Product names used for interoperability (for example local model
+servers or workflow tools) are property of their respective owners and do not
+imply endorsement.
+-------------------------------------------------------------------------------

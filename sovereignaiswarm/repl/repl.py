@@ -1,6 +1,22 @@
 import json
+import os
 
 from sovereignaiswarm import Swarm
+
+
+def _use_color() -> bool:
+    """ANSI color is decorative only; respect NO_COLOR / FORCE_COLOR."""
+    if os.environ.get("NO_COLOR"):
+        return False
+    if os.environ.get("FORCE_COLOR"):
+        return True
+    return True
+
+
+def _paint(text: str, code: str) -> str:
+    if not _use_color():
+        return text
+    return f"\033[{code}m{text}\033[0m"
 
 
 def process_and_print_streaming_response(response):
@@ -13,7 +29,7 @@ def process_and_print_streaming_response(response):
 
         if "content" in chunk and chunk["content"] is not None:
             if not content and last_sender:
-                print(f"\033[94m{last_sender}:\033[0m", end=" ", flush=True)
+                print(f"{_paint(last_sender, '94')}:", end=" ", flush=True)
                 last_sender = ""
             print(chunk["content"], end="", flush=True)
             content += chunk["content"]
@@ -24,7 +40,7 @@ def process_and_print_streaming_response(response):
                 name = f["name"]
                 if not name:
                     continue
-                print(f"\033[94m{last_sender}: \033[95m{name}\033[0m()")
+                print(f"{_paint(last_sender, '94')}: {_paint(name, '95')}()")
 
         if "delim" in chunk and chunk["delim"] == "end" and content:
             print()  # End of response message
@@ -39,7 +55,7 @@ def pretty_print_messages(messages) -> None:
         if message["role"] != "assistant":
             continue
 
-        print(f"\033[94m{message['sender']}\033[0m:", end=" ")
+        print(f"{_paint(message['sender'], '94')}:", end=" ")
 
         if message["content"]:
             print(message["content"])
@@ -51,7 +67,7 @@ def pretty_print_messages(messages) -> None:
             f = tool_call["function"]
             name, args = f["name"], f["arguments"]
             arg_str = json.dumps(json.loads(args)).replace(":", "=")
-            print(f"\033[95m{name}\033[0m({arg_str[1:-1]})")
+            print(f"{_paint(name, '95')}({arg_str[1:-1]})")
 
 
 def run_demo_loop(
@@ -61,16 +77,22 @@ def run_demo_loop(
     debug=False,
     client=None,
 ) -> None:
-    """Interactive CLI loop. Uses a local Swarm client by default."""
+    """Interactive CLI loop. Uses a local Swarm client by default.
+
+    Input is plain stdin (keyboard / pipe). Ctrl-C or EOF exits cleanly.
+    Set `NO_COLOR=1` to disable decorative ANSI colors; labels remain text-only.
+    """
     client = client or Swarm()
     print("Starting SovereignAISwarm CLI")
+    if not _use_color():
+        print("(NO_COLOR enabled — labels are plain text)")
 
     messages = []
     agent = starting_agent
 
     while True:
         try:
-            user_input = input("\033[90mUser\033[0m: ")
+            user_input = input(f"{_paint('User', '90')}: ")
         except (EOFError, KeyboardInterrupt):
             print()
             break

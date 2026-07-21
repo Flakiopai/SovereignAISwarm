@@ -29,6 +29,23 @@ def test_pretty_print_messages(capsys):
     assert "Ada" in out
 
 
+def test_pretty_print_respects_no_color(capsys, monkeypatch):
+    monkeypatch.setenv("NO_COLOR", "1")
+    messages = [
+        {
+            "role": "assistant",
+            "sender": "Agent",
+            "content": "Hello",
+            "tool_calls": [],
+        }
+    ]
+    pretty_print_messages(messages)
+    out = capsys.readouterr().out
+    assert "Agent" in out
+    assert "Hello" in out
+    assert "\033[" not in out
+
+
 def test_process_and_print_streaming_response(capsys):
     final = Response(
         messages=[{"role": "assistant", "content": "Hi", "sender": "Agent"}],

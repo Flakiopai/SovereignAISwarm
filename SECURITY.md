@@ -8,4 +8,9 @@ This project is designed for **local-first** use.
 
 Do not set `allow_cloud: true` or broaden `allowed_roots` unless you accept the risk.
 
-Report issues via your fork's issue tracker.
+Report issues via this repository's issue tracker.
+
+## Independence
+
+This project is an independent fork of the upstream Swarm project.
+It is not affiliated with, endorsed by, or sponsored by any organization.
